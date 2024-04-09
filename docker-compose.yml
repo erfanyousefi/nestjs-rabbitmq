@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres_rabbit
+    image: postgres
+    ports:
+      - "15432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=master123
+      - POSTGRES_DB=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+  rabbitmq:
+    container_name: rabbitmq_nest
+    image: rabbitmq:3.13-management
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  pg_data:
+    driver: local
+  rabbit_data:
+    driver: local
